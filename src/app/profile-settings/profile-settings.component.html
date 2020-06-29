@@ -1,0 +1,25 @@
+<div>
+  <h1> {{ title }} </h1>
+  <div *ngIf="user" class="user-details">
+    <p>
+      <span class="label">Username:</span>
+      <span>{{ user.username }} </span>
+    </p>
+    <p>
+      <span class="label">Email:</span>
+      <span>{{ user.email }}</span>
+    </p>
+    <div class="form-field">
+      <label> First Name: </label>
+      <input type="text" [ngModel]="user.firstName" (ngModelChange)="firstNameChanged($event)" [disabled]="isSaving" />
+    </div>
+    <div class="form-field">
+      <label> Last Name: </label>
+      <input type="text" [ngModel]="user.lastName" (ngModelChange)="lastNameChanged($event)" [disabled]="isSaving" />
+    </div>
+    <input lass="save-button" type="button" value="Save" (click)="saveProfile()" [disabled]="isSaving" />
+  </div>
+  <p *ngIf="isLoading"> Loading profile... </p>
+  <p *ngIf="isSaving"> Saving profile... </p>
+  <p class="error-message" *ngIf="isError && !(isLoading || isSaving)"> Error: {{error.error}} </p>
+</div>
