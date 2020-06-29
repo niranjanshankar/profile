@@ -20,15 +20,26 @@ export class ProfileSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
+    // hardcoded to retry only 5 times.
+    // Can be configured to receive as user param
+    this.getProfileUserUntil(5);
+  }
+
+  private getProfileUserUntil(max: number) {
     this.profileService.getProfileUser()
       .then(user => {
         this.user = { ...user };
         this.isLoading = false;
       })
       .catch(err => {
-        this.error = err;
-        this.isLoading = false;
-        this.isError = true;
+        // if limit reached, stop retring
+        if (max === 1) {
+          this.error = err;
+          this.isLoading = false;
+          this.isError = true;
+        } else {
+          this.getProfileUserUntil(max - 1);
+        }
       });
   }
 
